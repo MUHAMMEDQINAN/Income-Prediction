@@ -2,4 +2,7 @@ pandas
 Flask
 numpy
 scikit-learn
+catboost
+lightgbm
+xgboost
 # -e.

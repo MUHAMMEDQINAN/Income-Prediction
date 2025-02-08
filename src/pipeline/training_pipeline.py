@@ -1,7 +1,6 @@
 from src.components.data_ingestion import DataIngestion
 from src.components.data_transformation import DataTransformation
 from src.components.model_trainer import ModelTrainer
-from dataclasses import dataclass
 from src.logger  import logging
 
 if __name__ == "__main__":  
@@ -14,4 +13,3 @@ if __name__ == "__main__":
 
     model_training = ModelTrainer()
     model_training.initiate_model_trainer(train_arr,test_arr)
-

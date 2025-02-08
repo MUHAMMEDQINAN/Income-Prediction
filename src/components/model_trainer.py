@@ -8,7 +8,11 @@ from src.utils import save_object
 from src.utils import evaluate_model
 from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import RandomForestClassifier,GradientBoostingClassifier,AdaBoostClassifier
+from  catboost import CatBoostClassifier
+from lightgbm import LGBMClassifier
+from xgboost import XGBClassifier
+from sklearn.svm import SVC
 
 # configuration for saving the trained model
 @dataclass
@@ -37,7 +41,13 @@ class ModelTrainer:
             model ={
                 "Random Forest": RandomForestClassifier(),
                 "Decision Tree": DecisionTreeClassifier(),
-                "Logastic": LogisticRegression()                
+                "Logastic": LogisticRegression(),
+                "Gradient Boosting": GradientBoostingClassifier(),
+                "AdaBoost": AdaBoostClassifier(),
+                "Support Vector Machine": SVC(probability=True),
+                "XGBoost": XGBClassifier(use_label_encoder=False, eval_metric="logloss"),
+                "LightGBM": LGBMClassifier(),
+                "CatBoost": CatBoostClassifier(verbose=0)              
             }
             params = {
                 "Random Forest":{
@@ -60,7 +70,39 @@ class ModelTrainer:
                     'penalty': ['l1', 'l2'],
                     'C': [0.001, 0.01, 0.1, 1, 10, 100],
                     'solver': ['liblinear', 'saga']
-                }          
+                },
+                "Gradient Boosting": {
+                    'n_estimators': [50, 100, 200],
+                    'learning_rate': [0.01, 0.1, 0.2],
+                    'max_depth': [3, 4, 5],
+                    'subsample': [0.8, 1.0]
+                },
+                "AdaBoost": {
+                    'n_estimators': [50, 100, 200],
+                    'learning_rate': [0.01, 0.1, 1]
+                },
+                "Support Vector Machine": {
+                    'C': [0.1, 1, 10, 100],
+                    'kernel': ['linear', 'poly', 'rbf', 'sigmoid'],
+                    'gamma': ['scale', 'auto']
+                },
+                "XGBoost": {
+                    'n_estimators': [50, 100, 200],
+                    'learning_rate': [0.01, 0.1, 0.2],
+                    'max_depth': [3, 4, 5],
+                    'subsample': [0.8, 1.0]
+                },
+                "LightGBM": {
+                    'n_estimators': [50, 100, 200],
+                    'learning_rate': [0.01, 0.1, 0.2],
+                    'num_leaves': [20, 31, 40],
+                    'boosting_type': ['gbdt', 'dart']
+                },
+                "CatBoost": {
+                    'iterations': [100, 200, 300],
+                    'learning_rate': [0.01, 0.1, 0.2],
+                    'depth': [4, 6, 8]
+                }        
             }
 
             # evaluate model return trained model with corresponding accuracy as a dictionary
